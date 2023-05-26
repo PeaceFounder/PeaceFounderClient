@@ -5,6 +5,7 @@ version = "0.0.1"
 
 [deps]
 Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"
-PeaceFounder = "e27653ee-9918-43bd-96c3-a19beeb55964"
+HTTP = "cd3eb016-35fb-5094-929b-558a96fad6f3"
+PeaceFounder = "916f7771-afe2-4319-943d-0e770c333432"
 QML = "2db162a6-7e43-52c3-8d84-290c1c42d82a"
 Qt65Compat_jll = "f5784262-74e5-52be-b835-f3e8a3cf8710"
