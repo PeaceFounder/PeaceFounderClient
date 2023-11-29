@@ -1,15 +1,15 @@
 # Simple startup script
 
-import Pkg
-Pkg.activate(@__DIR__)
-Pkg.instantiate()
+# import Pkg
+# Pkg.activate(@__DIR__)
+# Pkg.instantiate()
 
 
 import QML 
-include("src/PeaceFounderGUI.jl")
+include("src/PeaceFounderClient.jl")
 
-PeaceFounderGUI.load_view() do
+PeaceFounderClient.load_view() do
 
-    PeaceFounderGUI.setHome()
+    PeaceFounderClient.setHome()
 
 end

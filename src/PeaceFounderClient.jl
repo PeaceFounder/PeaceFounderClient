@@ -1,4 +1,4 @@
-module PeaceFounderGUI
+module PeaceFounderClient
 
 using Dates: Dates, DateTime, TimePeriod
 #using Infiltrator

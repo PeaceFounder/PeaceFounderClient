@@ -1,0 +1,27 @@
+name: {{APP_NAME}}
+base: core22
+version: '{{APP_VERSION}}'
+summary: {{APP_SUMMARY}} 
+description: {{APP_DESCRIPTION}} #A longer description of my app.
+grade: devel
+confinement: classic 
+
+apps:
+  {{APP_NAME}}:
+    command: bin/{{APP_NAME}}
+    desktop: meta/gui/{{APP_NAME}}.desktop
+    plugs:
+      - opengl
+      - desktop
+      - desktop-legacy
+      - wayland
+      - x11
+      - network
+
+hooks:
+  configure:
+    plugs:
+      - network
+      - opengl
+      - wayland
+
