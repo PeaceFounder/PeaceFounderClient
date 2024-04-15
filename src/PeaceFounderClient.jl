@@ -1,9 +1,8 @@
 module PeaceFounderClient
 
 using Dates: Dates, DateTime, TimePeriod
-#using Infiltrator
-using PeaceFounder
-using PeaceFounder: Client, Model, Parser
+using PeaceFounder: Client
+using PeaceFounder.Core: Model, Parser
 using QML
 
 using Qt65Compat_jll
@@ -13,308 +12,70 @@ using Base: UUID
 using .Client: DemeClient, DemeAccount, ProposalInstance
 using .Model: Selection, Proposal
 
-
-mutable struct DemeItem
-    uuid::String
-    title::String
-    #commitIndex::Int # commitIndex
-    memberCount::Int # groupSize
-end
+include("utils.jl")
+include("model.jl")
 
 
-mutable struct ProposalItem
-    index::Int # proposalIndex or simply index
-    title::String
-    voterCount::Int
-    castCount::Int
-    isVotable::Bool
-    isCast::Bool
-    isTallied::Bool
-    timeWindow::String
-end
+global CLIENT::DemeClient = DemeClient()
 
-mutable struct BallotQuestion
-    question::String
-    options::Vector{String}
-    choice::Int
-end
+global USER_DEMES::JuliaItemModel
+global DEME_STATUS::JuliaPropertyMap
+global DEME_PROPOSALS::JuliaItemModel 
+global PROPOSAL_METADATA::JuliaPropertyMap
+global PROPOSAL_STATUS::JuliaPropertyMap
+global PROPOSAL_BALLOT::JuliaItemModel
+global GUARD_STATUS::JuliaPropertyMap
 
+function __init__()
 
-function select(predicate::Function, data::Vector)
+    global USER_DEMES = JuliaItemModel(DemeItem[])
 
-    N = findfirst(predicate, data)
+    global DEME_STATUS = JuliaPropertyMap(
+        "uuid" => "UNDEFINED",
+        "title" => "Local democratic community",
+        "demeSpec" => "2AAE6C35 C94FCFB4 15DBE95F 408B9CE9 1EE846ED",
+        "memberIndex" => 21,
+        "commitIndex" => 89,
+        "memberCount" => 16
+    )
 
-    @assert !isnothing(N) "No item with given predicate found"
+    global DEME_PROPOSALS = JuliaItemModel(ProposalItem[])
 
-    return data[N]
-end
+    global PROPOSAL_METADATA = JuliaPropertyMap(
+        "index" => 0,
+        "title" => "PROPOSAL TITLE",
+        "description" => "PROPOSAL DESCRIPTION",
+        "stateAnchor" => 0,
+        "voterCount" => 0
+    )
 
-select(predicate::Function, model::QML.JuliaItemModelAllocated) = select(predicate, QML.get_julia_data(model).values[])
+    global PROPOSAL_STATUS = JuliaPropertyMap(
+        "isVotable" => false,
+        "isCast" => false,
+        "isTallied" => false,
+        "timeWindowShort" => "HOURS Remaining",
+        "timeWindowLong" => "HOURS remaining to cast your choice",
+        "castCount" => 0
+    )
 
+    global PROPOSAL_BALLOT = JuliaItemModel(BallotQuestion[])
 
-function reset!(lm, list)
-
-    QML.begin_reset_model(lm)
-
-    data = QML.get_julia_data(lm)
-
-    empty!(data.values[])
-    append!(data.values[], list)
-
-    QML.end_reset_model(lm)
-
-    return
-end
-
-
-function load_prototype()
-
-    loadqml((@__DIR__) * "/../qml/Prototype.qml")
-    exec()
+    global GUARD_STATUS = JuliaPropertyMap(
+        "pseudonym" => "2AAE6C35 C94FCFB4 15DBE95F 408B9CE9 1EE846ED",
+        "timestamp" => "June 15, 2009 1:45 PM",
+        "castIndex" => 0,
+        "commitIndex" => 0,
+        "commitRoot" => "2AAE6C35 C94FCFB4 15DBE95F 408B9CE9 1EE846ED"
+    )
 
     return
 end
-
-const USER_DEMES = JuliaItemModel(DemeItem[])
-
-const DEME_STATUS = JuliaPropertyMap(
-    "uuid" => "UNDEFINED",
-    "title" => "Local democratic community",
-    "demeSpec" => "2AAE6C35 C94FCFB4 15DBE95F 408B9CE9 1EE846ED",
-    "memberIndex" => 21,
-    "commitIndex" => 89,
-    "memberCount" => 16
-)
-
-const DEME_PROPOSALS = JuliaItemModel(ProposalItem[])
-
-const PROPOSAL_METADATA = JuliaPropertyMap(
-    "index" => 0,
-    "title" => "PROPOSAL TITLE",
-    "description" => "PROPOSAL DESCRIPTION",
-    "stateAnchor" => 0,
-    "voterCount" => 0
-)
-
-const PROPOSAL_STATUS = JuliaPropertyMap(
-    "isVotable" => false,
-    "isCast" => false,
-    "isTallied" => false,
-    "timeWindowShort" => "HOURS Remaining",
-    "timeWindowLong" => "HOURS remaining to cast your choice",
-    "castCount" => 0
-)
-
-const PROPOSAL_BALLOT = JuliaItemModel(BallotQuestion[])
-
-const GUARD_STATUS = JuliaPropertyMap(
-    "pseudonym" => "2AAE6C35 C94FCFB4 15DBE95F 408B9CE9 1EE846ED",
-    "timestamp" => "June 15, 2009 1:45 PM",
-    "castIndex" => 0,
-    "commitIndex" => 0,
-    "commitRoot" => "2AAE6C35 C94FCFB4 15DBE95F 408B9CE9 1EE846ED"
-)
-
-
-
-function load_view(init::Function = () -> nothing)
-
-    loadqml((@__DIR__) * "/../qml/Bridge.qml"; 
-            _USER_DEMES = USER_DEMES,
-            _DEME_STATUS = DEME_STATUS,
-            _DEME_PROPOSALS = DEME_PROPOSALS,
-            _PROPOSAL_METADATA = PROPOSAL_METADATA,
-            _PROPOSAL_STATUS = PROPOSAL_STATUS,
-            _PROPOSAL_BALLOT = PROPOSAL_BALLOT,
-            _GUARD_STATUS = GUARD_STATUS
-            )
-
-    init()
-
-    exec()
-
-end
-
-
-
-const CLIENT = DemeClient()
-
-
-function item(account::DemeAccount)
-
-
-    uuid = uppercase(string(account.deme.uuid))
-    title = account.deme.title
-    memberCount = account.commit.state.member_count # could shorten state(account).member_count
-
-    return DemeItem(uuid, title, memberCount)
-end
-
-
-
-# The way to print out the interval is 
-# more an UI decission. Although it could help improving 
-# prining of a proposal and perhaps justify introducing TimeWindow type
-
-
-function time_period(period::TimePeriod)
-
-    if period < Dates.Second(90)
-
-        seconds = div(period, Dates.Second(1))
-        return "$seconds seconds"
-
-    elseif period < Dates.Minute(90)
-
-        minutes = div(period, Dates.Minute(1), RoundUp)
-        return "$minutes minutes"
-
-    elseif period < Dates.Hour(36)
-
-        hours = div(period, Dates.Hour(1), RoundUp)
-        return "$hours hours"
-
-    else
-
-        # Need to make it two days
-
-        days = div(period, Dates.Day(1), RoundUp)
-        return "$days days"
-
-    end
-
-end
-
-
-function time_window(open::DateTime, closed::DateTime; time = Dates.now())
-
-    if time < open
-                
-        period = open - time
-        period_str = time_period(period)
-
-        return "Opens in $period_str"
-
-    elseif time > closed
-
-        period = time - closed
-
-        if period < Dates.Hour(12)
-
-            period_str = time_period(period)
-            return "Closed $period_str ago"
-
-        else
-
-            str = Dates.format(closed, Dates.dateformat"dd-u-yyyy")
-            return "Closed on $str"
-
-        end
-
-    else 
-
-        period = closed - time
-        period_str = time_period(period)
-
-        return "$period_str remaining"
-
-    end
-end
-
-
-time_window(proposal::Proposal) = time_window(proposal.open, proposal.closed)
-
-
-
-function item(instance::ProposalInstance)
-
-    index = instance.index
-    title = instance.proposal.summary
-    voterCount = instance.proposal.anchor.member_count
-    #castCount = isnothing(instance.commit) ? 0 : instance.commit.state.index
-    castCount = isnothing(Model.commit(instance)) ? 0 : Model.commit(instance).state.index
-    
-    #isVotable = Client.isvotable(instance)
-    isVotable = Client.isopen(instance)
-    isTallied = Client.istallied(instance)
-    isCast = !isnothing(instance.guard)
-    timeWindow = time_window(instance.proposal)
-
-    return ProposalItem(index, title, voterCount, castCount, isVotable, isCast, isTallied, timeWindow)
-end
-
-function ballot(instance::ProposalInstance)
-
-    question = "" # Until ballot type gets fixed
-    options = instance.proposal.ballot.options
-    
-    pushfirst!(options, "Not Selected")
-    choice = 0 
-
-    return BallotQuestion(question, options, choice)
-end
-
-
-function select(predicate::Function, collection::AbstractVector)
-
-    for item in collection
-        if predicate(item)
-            return item
-        end
-    end
-
-    return nothing
-end
-
-
-select(predicate::Function) = collection -> select(predicate, collection)
-
-
-select(uuid::UUID, client::Client.DemeClient) = select(account -> account.deme.uuid == uuid, client.accounts)
-select(uuid::AbstractString, client::Client.DemeClient) = select(UUID(uuid), client)
-
-select(index::Integer, account::DemeAccount) = select(instance -> instance.index == index, account.proposals)
-select(uuid::UUID, account::DemeAccount) = select(instance -> instance.proposal.uuid == uuid, account.instances)
 
 
 setHome() = reset!(USER_DEMES, DemeItem[item(i) for i in CLIENT.accounts])
 
 
-function group_slice(collection, n::Int) 
-
-    K = length(collection)
-
-    @assert mod(K, n) == 0
-
-    #s = Vector{T}[]
-    s = []
-
-    for i in 1:div(K, n)
-
-        head = 1 + n * (i - 1)
-        tail = n * i
-
-        push!(s, collection[head:tail])
-    end
-
-    return s
-end
-
-
-function digest_pretty_string(digest::Model.Digest)
-
-    bytes = Model.bytes(digest)[1:16] # Only first 16 are displayed
-
-    str = uppercase(bytes2hex(bytes))
-    
-    str_pretty = join(group_slice(str, 8), "-")
-
-    return str_pretty
-end
-
-
 function setDeme(uuid::QString)
-    
 
     (; commit, proposals, deme, guard) = select(uuid, CLIENT)
 
@@ -336,7 +97,6 @@ function setDeme(uuid::QString)
 end
 
 setDeme(uuid::UUID) = setDeme(QString(string(uuid)))
-
 
 
 function setProposal(index::Int32)
@@ -401,8 +161,7 @@ function setGuard()
 end
 
 
-
-
+# TODO: If cast_vote fails we need to prevent moving to the next page
 function castBallot()
 
     items = QML.get_julia_data(PROPOSAL_BALLOT).values[]
@@ -411,7 +170,12 @@ function castBallot()
     uuid = UUID(DEME_STATUS["uuid"])
     index = PROPOSAL_METADATA["index"]
 
-    Client.cast_vote!(CLIENT, uuid, index, Selection(choices[1]))
+    try
+        Client.cast_vote!(CLIENT, uuid, index, Selection(choices[1]))
+    catch
+        @warn "Casting of the ballot have failed"
+        resetBallot()
+    end
 
     setProposal(index)
     setDeme(uuid)
@@ -463,7 +227,7 @@ end
 
 
 function resetBallot()
-
+    
     index = PROPOSAL_METADATA["index"]
     setProposal(index)
 
@@ -474,29 +238,79 @@ end
 function addDeme(invite::Client.Invite)
 
     account = Client.enroll!(CLIENT, invite)
-
     Client.update_deme!(account)
-    
     setHome()
     
     return
 end
 
-
 function addDeme(invite_str::QString)
 
     invite = Parser.unmarshal(invite_str |> String, Client.Invite)
-    
-    return addDeme(invite)
+    addDeme(invite)
+
+    return
 end
 
 
-@qmlfunction setDeme setProposal castBallot refreshHome refreshDeme refreshProposal resetBallot addDeme
+function ErrorMiddleware(handler::Function; name = nameof(handler))
+
+    _esc(x) = x
+    _esc(x::AbstractString) = "\"$x\""
+
+    return function(args...)
+        _args = join([_esc(i) for i in args], ", ")
+        @info "Calling $name($_args)"
+        try 
+            handler(args...)
+        catch error
+            @error "$name($_args)" exception=(error, catch_backtrace())
+        end
+    end
+end
+
+function load_prototype()
+
+    loadqml((@__DIR__) * "/../qml/Prototype.qml")
+    exec()
+
+    return
+end
 
 
+function set_qmlfunction(f::Function; name::Symbol = nameof(f), middleware = [])
+
+    handler(args...) = ErrorMiddleware(f; name)(args...) # To support Revise tracking for ErrorMiddleware
+    qmlfunction(string(name), reduce(|>, [handler, middleware...]))
+
+    return
+end
+
+
+function load_view(init::Function = () -> nothing; middleware = [])
+
+    for func in [setDeme, setProposal, castBallot, refreshHome, refreshDeme, refreshProposal, resetBallot, addDeme]
+        set_qmlfunction(func; middleware)
+    end
+
+    loadqml((@__DIR__) * "/../qml/Bridge.qml"; 
+            _USER_DEMES = USER_DEMES,
+            _DEME_STATUS = DEME_STATUS,
+            _DEME_PROPOSALS = DEME_PROPOSALS,
+            _PROPOSAL_METADATA = PROPOSAL_METADATA,
+            _PROPOSAL_STATUS = PROPOSAL_STATUS,
+            _PROPOSAL_BALLOT = PROPOSAL_BALLOT,
+            _GUARD_STATUS = GUARD_STATUS
+            )
+
+    init() # What use do I have here actually?
+    exec()
+
+    return
+end
 
 function julia_main()::Cint
-    
+
     load_view() do
         setHome()
     end

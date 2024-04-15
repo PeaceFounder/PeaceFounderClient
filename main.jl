@@ -4,12 +4,24 @@
 # Pkg.activate(@__DIR__)
 # Pkg.instantiate()
 
+using PeaceFounderClient
 
-import QML 
-include("src/PeaceFounderClient.jl")
 
-PeaceFounderClient.load_view() do
+if @isdefined(Revise)
 
-    PeaceFounderClient.setHome()
+    function ReviseHandler(handle)
+        return function(args...)
+            Revise.revise()
+            invokelatest(handle, args...)
+        end
+    end
 
+    PeaceFounderClient.load_view(middleware = [ReviseHandler]) do
+        PeaceFounderClient.setHome()
+    end
+
+else
+    PeaceFounderClient.load_view() do
+        PeaceFounderClient.setHome()
+    end
 end
