@@ -1,20 +1,29 @@
 import QtQuick
-import QtQuick.Window
 import QtQuick.Controls
-
 import Qt5Compat.GraphicalEffects
 
-Window {
+/* Window { */
+
+Item {
     id: app
-    width: 550
-    height: 700
+    width: parent.width;
+    height: parent.height; 
 
-    visible: true
-    color: Style.pageBackground 
-    title: "PeaceFounder"
-
+    Rectangle {
+        anchors.fill: parent
+        color: Style.pageBackground; // Set your desired background color here
+    }
+    
 
     property var userDemes
+
+    component ErrorStatusType : QtObject {
+        property bool isRaised
+        property string title
+        property string message
+    }
+
+    property ErrorStatusType errorStatus : ErrorStatusType { }
 
 
     component DemeStatusType : QtObject {
@@ -187,11 +196,13 @@ Window {
 
                 // To cover errror states I will do a pattern matching with states 
                 // on a new castStatus property
-                app.resetBallot()
-                app.page = 5
-                                
+                
+                if (!app.errorStatus.isRaised) {
+                    app.resetBallot()
+                    app.page = 5
+                }
             }
-
+            
             onTrash : {
                 app.resetBallot()
             }
@@ -218,7 +229,6 @@ Window {
         }
 
     }
-        
 
 
     Rectangle {
@@ -226,7 +236,6 @@ Window {
         anchors.fill: fastBlur
         color: Style.stepperBackground 
     }
-
 
     DropShadow {
         anchors.fill: rect
@@ -350,4 +359,22 @@ Window {
         ]
     }
 
+
+    ModalError { // OK simply changes visibility
+        id: error
+
+        visible: false
+        
+        title: errorStatus.title 
+        message: errorStatus.message 
+        isRaised: errorStatus.isRaised
+
+        onVisibleChanged: {
+            if (!error.visible) {  // This is equivalent to a signal pressing OK
+                errorStatus.isRaised = false
+            }
+        }
+
+    }
+    
 }

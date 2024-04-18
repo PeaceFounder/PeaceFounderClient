@@ -1,3 +1,5 @@
+using Base.StackTraces
+
 function select(predicate::Function, data::Vector)
 
     N = findfirst(predicate, data)
@@ -145,4 +147,56 @@ function digest_pretty_string(digest::Model.Digest)
     str_pretty = join(group_slice(str, 8), "-")
 
     return str_pretty
+end
+
+# Curently unused. Would be useful for print_spec_linfo without regexes
+function simplify_type_name(T::Type)
+    # Get the simple name of the type without module prefix
+    simple_name = string(nameof(T))
+
+    # Determine if T is a parameterized type and if it has actual parameters
+    if T isa DataType && !isempty(T.parameters) && T.name.wrapper != nothing
+        # Recursively format each parameter
+        param_names = join(simplify_type_name.(T.parameters), ", ")
+        return "$(simple_name){$param_names}"
+    else
+        # Return just the simple name for non-parameterized types
+        return simple_name
+    end
+end
+
+
+function remove_namespaces(s::String)
+    # This pattern matches any namespace ending with a dot before a type name
+    pattern = r"[\w\.]+\.(\w+)"
+    # Replace the full namespace and type with just the type
+    return replace(s, pattern => s"\1")
+end
+
+function print_spec_linfo(io, frame)
+
+    buf = IOBuffer()
+    StackTraces.show_spec_linfo(buf, frame)
+    str = take!(buf) |> String
+
+    spec = remove_namespaces(str)
+    
+    print(io, spec)
+
+    return
+end
+
+function print_simplified_backtrace(io, bt)
+    frames = StackTraces.stacktrace(bt)
+    for frame in frames
+        parent_module = StackTraces.parentmodule(frame)
+
+        if !(frame.linfo isa Core.MethodInstance)
+            continue
+        end
+
+        print_spec_linfo(io, frame)
+        println(io)
+        println(io, "@ $parent_module")
+    end
 end

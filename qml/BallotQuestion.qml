@@ -3,7 +3,6 @@ import QtQuick.Controls
 
 Item { 
 
-    //property alias model : control.model
     property alias model : control.model
     property alias text : label.text
 

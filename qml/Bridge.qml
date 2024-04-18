@@ -1,6 +1,8 @@
 import org.julialang
 
 App {
+    width: parent.width
+    height: parent.height
 
     userDemes : _USER_DEMES
 
@@ -20,6 +22,7 @@ App {
     onRefreshProposal : Julia.refreshProposal()
 
     onResetBallot : Julia.resetBallot()
+
 
     demeProposals : _DEME_PROPOSALS
 
@@ -68,4 +71,17 @@ App {
 
     }
 
+
+    JuliaSignals {
+        //signal raiseError(string title, string msg)
+        signal raiseError(var title, var msg)
+        onRaiseError: {
+            errorStatus.isRaised = true;
+            errorStatus.title = title;
+            errorStatus.message = msg;
+        }
+    }
+
 }
+
+

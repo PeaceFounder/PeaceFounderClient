@@ -15,7 +15,6 @@ using .Model: Selection, Proposal
 include("utils.jl")
 include("model.jl")
 
-
 global CLIENT::DemeClient = DemeClient()
 
 global USER_DEMES::JuliaItemModel
@@ -25,6 +24,8 @@ global PROPOSAL_METADATA::JuliaPropertyMap
 global PROPOSAL_STATUS::JuliaPropertyMap
 global PROPOSAL_BALLOT::JuliaItemModel
 global GUARD_STATUS::JuliaPropertyMap
+global ERROR_STATUS::JuliaPropertyMap
+
 
 function __init__()
 
@@ -83,8 +84,6 @@ function setDeme(uuid::QString)
     
     DEME_STATUS["uuid"] = QString(uppercase(string(deme.uuid)))
     DEME_STATUS["title"] = deme.title
-
-    #@infiltrate
 
     DEME_STATUS["memberCount"] = commit.state.member_count
 
@@ -160,8 +159,6 @@ function setGuard()
     return
 end
 
-
-# TODO: If cast_vote fails we need to prevent moving to the next page
 function castBallot()
 
     items = QML.get_julia_data(PROPOSAL_BALLOT).values[]
@@ -172,9 +169,26 @@ function castBallot()
 
     try
         Client.cast_vote!(CLIENT, uuid, index, Selection(choices[1]))
-    catch
-        @warn "Casting of the ballot have failed"
-        resetBallot()
+    catch error
+
+        bt = catch_backtrace()
+
+        title = "Casting of the vote failed"
+        main_msg = "Check that your ballot is formed corectly as well as that you can reach the ballotbox with your network connection."
+
+        io = IOBuffer()
+        
+        println(io, main_msg)
+        println(io)
+
+        println(io, "Evaluating: castBallot()")
+        showerror(io, error)
+        println(io, "\n")
+        print_simplified_backtrace(io, bt[1:1])
+        msg = String(take!(io))
+
+        @emit raiseError(title, msg) 
+        @error "castBallot()" exception=(error, bt) # For REPL
     end
 
     setProposal(index)
@@ -182,7 +196,6 @@ function castBallot()
 
     return
 end
-
 
 function refreshHome()
 
@@ -192,7 +205,6 @@ function refreshHome()
     return
 end
 
-
 function refreshDeme()
 
     Client.update_deme!(CLIENT, UUID(string(DEME_STATUS["uuid"])))
@@ -200,7 +212,6 @@ function refreshDeme()
 
     return
 end
-
 
 function refreshProposal()
 
@@ -225,7 +236,6 @@ function refreshProposal()
     return
 end
 
-
 function resetBallot()
     
     index = PROPOSAL_METADATA["index"]
@@ -233,7 +243,6 @@ function resetBallot()
 
     return
 end
-
 
 function addDeme(invite::Client.Invite)
 
@@ -264,7 +273,20 @@ function ErrorMiddleware(handler::Function; name = nameof(handler))
         try 
             handler(args...)
         catch error
-            @error "$name($_args)" exception=(error, catch_backtrace())
+            
+            bt = catch_backtrace()
+
+            title = "Untreated Error"
+
+            io = IOBuffer()
+            println(io, "Evaluating: $name($_args)")
+            showerror(io, error)
+            println(io, "\n")
+            print_simplified_backtrace(io, bt[1:1])
+            msg = String(take!(io))
+
+            @emit raiseError(title, msg) 
+            @error "$name($_args)" exception=(error, bt) # For REPL
         end
     end
 end
@@ -286,14 +308,13 @@ function set_qmlfunction(f::Function; name::Symbol = nameof(f), middleware = [])
     return
 end
 
-
 function load_view(init::Function = () -> nothing; middleware = [])
 
     for func in [setDeme, setProposal, castBallot, refreshHome, refreshDeme, refreshProposal, resetBallot, addDeme]
         set_qmlfunction(func; middleware)
     end
 
-    loadqml((@__DIR__) * "/../qml/Bridge.qml"; 
+    loadqml((@__DIR__) * "/../qml/Main.qml"; 
             _USER_DEMES = USER_DEMES,
             _DEME_STATUS = DEME_STATUS,
             _DEME_PROPOSALS = DEME_PROPOSALS,
@@ -301,6 +322,7 @@ function load_view(init::Function = () -> nothing; middleware = [])
             _PROPOSAL_STATUS = PROPOSAL_STATUS,
             _PROPOSAL_BALLOT = PROPOSAL_BALLOT,
             _GUARD_STATUS = GUARD_STATUS
+            #_ERROR_STATUS = ERROR_STATUS
             )
 
     init() # What use do I have here actually?

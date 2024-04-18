@@ -2,7 +2,7 @@
 
 julia_version = "1.10.2"
 manifest_format = "2.0"
-project_hash = "2d449ed471b000fbc0dcec5a66cb9cf949869104"
+project_hash = "1a83d0c168b1b9664fa39305d26b498e5d11410f"
 
 [[deps.ArgParse]]
 deps = ["Logging", "TextWrap"]
@@ -196,9 +196,9 @@ version = "0.2.0"
 
 [[deps.Infiltrator]]
 deps = ["InteractiveUtils", "Markdown", "REPL", "UUIDs"]
-git-tree-sha1 = "da74f31a8bc67bbd6669038850fb2ffab8f67a9b"
+git-tree-sha1 = "663ecbf362df6a7775bbb56b4bddcea0b291cb01"
 uuid = "5903a43b-9cc3-4c30-8d17-598619ec4e9b"
-version = "1.8.1"
+version = "1.8.2"
 
 [[deps.IntegerMathUtils]]
 git-tree-sha1 = "b8ffb903da9f7b8cf695a8bead8e01814aa24b30"
