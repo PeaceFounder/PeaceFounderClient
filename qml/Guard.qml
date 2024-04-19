@@ -59,14 +59,13 @@ AppPage {
 
                 color : Style.textPrimary
 
-                text : "Perhaps the guardian or collector acted maliciously, or the adversary obtained their credentials, which assured that the vote had been successfully recorded, whereas, in reality, it made to a black hole.
+                text : "Perhaps the guardian or collector acted with malicious intent, or an adversary compromised their credentials. This breach might have falsely confirmed that your vote was recorded when, in fact, it disappeared into a black hole.
 
-If the local device can be trusted, you can use a third-party device and go to the ballot box to check the current ledger commit. If the root matches with the one you have, it’s settled. Behind the scenes, this will also detect your credential theft after the tally is published in situations your credentials have leaked.
+To keep the authority accountable, you can use your device. After a while, press a refresh button to retrieve the current ledger commit. Behind the scenes, this uses History Tree consistency proofs, ensuring your cast vote is consistent with the current ledger commit. This may be enough, but as the last line of defence, check the officially announced tally and the root commit from a different channel, such as a web browser, newspaper, etc., and compare them to what is shown on your screen. 
 
-TIP: use a refresh button to get the most recent commit, and consider using a TOR browser if you do that right away to preserve your anonymity.
+If your device is infected by malware, it could deceive you that your vote is correctly counted. To counter this threat, you have two options. Within 15 minutes of casting your vote, you can use the code displayed on your screen, XXXX-XXXX, to verify in your browser that your vote has been recorded as intended.
 
-If your device is infected with malware, you can detect that. Take note of the receipt now and wait until the elections end and the tally with all votes is published. Look in the ledger and find record 9. Check that it was cast at the time you cast it, that it was made in the final count, that pseudonyms match, and that the vote is cast as intended.
-"
+Alternatively, once the election authority has published the votes on the bulletin board, you can verify your vote there. Once published, locate your vote using your cast index to ensure it was recorded as intended, included in the final tally, not overshadowed by other votes with the same pseudonym, and accurately reflects the time you cast it. The latter part is essential to prevent misdirections by malware in checking another person's vote."
 
             }
 

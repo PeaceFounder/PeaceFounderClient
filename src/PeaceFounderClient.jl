@@ -15,7 +15,7 @@ using .Model: Selection, Proposal
 include("utils.jl")
 include("model.jl")
 
-global CLIENT::DemeClient = DemeClient()
+global CLIENT::DemeClient# = DemeClient()
 
 global USER_DEMES::JuliaItemModel
 global DEME_STATUS::JuliaPropertyMap
@@ -28,6 +28,8 @@ global ERROR_STATUS::JuliaPropertyMap
 
 
 function __init__()
+
+    global CLIENT = DemeClient()
 
     global USER_DEMES = JuliaItemModel(DemeItem[])
 
@@ -62,7 +64,7 @@ function __init__()
     global PROPOSAL_BALLOT = JuliaItemModel(BallotQuestion[])
 
     global GUARD_STATUS = JuliaPropertyMap(
-        "pseudonym" => "2AAE6C35 C94FCFB4 15DBE95F 408B9CE9 1EE846ED",
+        "pseudonym" => "#223.324",
         "timestamp" => "June 15, 2009 1:45 PM",
         "castIndex" => 0,
         "commitIndex" => 0,
@@ -142,13 +144,21 @@ end
 
 setProposal(index::Integer) = setProposal(Int32(index))
 
+#using Infiltrator
+
 function setGuard()
 
     account = select(DEME_STATUS["uuid"], CLIENT)
     instance = select(PROPOSAL_METADATA["index"], account)
 
-    GUARD_STATUS["pseudonym"] = Model.digest(Model.pseudonym(instance.guard.vote), Model.hasher(account.deme)) |> digest_pretty_string
-    GUARD_STATUS["timestamp"] = string(instance.guard.ack_cast.receipt.timestamp)
+    #Model.digest(Model.pseudonym(instance.guard.vote), Model.hasher(account.deme)) |> digest_pretty_string
+
+    anchor_index = instance.proposal.anchor.index
+    alias = instance.guard.ack_cast.alias
+
+    #@infiltrate
+    GUARD_STATUS["pseudonym"] = "#$anchor_index.$alias"
+    GUARD_STATUS["timestamp"] = timestamp = Dates.format(instance.guard.ack_cast.receipt.timestamp, "d u yyyy, HH:MM")
     GUARD_STATUS["castIndex"] = instance.guard.ack_cast.ack.proof.index
 
     _commit = Model.commit(instance.guard)

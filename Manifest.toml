@@ -104,9 +104,9 @@ version = "0.14.2"
 
 [[deps.DataStructures]]
 deps = ["Compat", "InteractiveUtils", "OrderedCollections"]
-git-tree-sha1 = "97d79461925cdb635ee32116978fc735b9463a39"
+git-tree-sha1 = "1d0a14036acb104d9e89698bd408f63ab58cdc82"
 uuid = "864edb3b-99cc-5e75-8d2d-829cb0a9cfe8"
-version = "0.18.19"
+version = "0.18.20"
 
 [[deps.Dates]]
 deps = ["Printf"]
@@ -416,7 +416,7 @@ version = "2.8.1"
 
 [[deps.PeaceFounder]]
 deps = ["ArgParse", "Base64", "CryptoGroups", "CryptoSignatures", "Dates", "DocStringExtensions", "HTTP", "HistoryTrees", "Infiltrator", "JSON3", "Nettle", "Oxygen", "Random", "Setfield", "ShuffleProofs", "StructHelpers", "StructTypes", "SwaggerMarkdown", "Tar", "Test", "URIs"]
-git-tree-sha1 = "522763c8d054078cba9ef96e20b2f5e6b2984028"
+git-tree-sha1 = "eedea2280188eaa1744177c9805c44aabfa0bd57"
 repo-rev = "master"
 repo-url = "https://github.com/PeaceFounder/PeaceFounder.jl"
 uuid = "916f7771-afe2-4319-943d-0e770c333432"

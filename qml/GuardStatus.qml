@@ -211,7 +211,7 @@ Rectangle {
                     text : card.pseudonym
                     color : card.textColor
                     //font.weight : Font.Light
-                    font.pointSize: 10
+                    font.pointSize: 14 //10
                 }
 
                 Row {

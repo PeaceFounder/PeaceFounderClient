@@ -47,6 +47,36 @@ function reset!(lm, list)
 end
 
 
+# function ordinal_suffix(day)
+#     if day in [11, 12, 13]
+#         return "th"
+#     elseif day % 10 == 1
+#         return "st"
+#     elseif day % 10 == 2
+#         return "nd"
+#     elseif day % 10 == 3
+#         return "rd"
+#     else
+#         return "th"
+#     end
+# end
+
+# # Function to format the date
+# function format_date_ordinal(date)
+#     # Extract components of the date
+#     year = Dates.year(date)
+#     month = Dates.format(date, "u")
+#     day = Dates.day(date)
+#     hour = Dates.hour(date)
+#     minute = Dates.minute(date)
+    
+#     # Combine components with the ordinal suffix
+#     formatted_date = string(month, " ", day, ordinal_suffix(day), " ", year, " at ", lpad(hour, 2, '0'), ":", lpad(minute, 2, '0'))
+    
+#     return formatted_date
+# end
+
+
 # The way to print out the interval is 
 # more an UI decission. Although it could help improving 
 # prining of a proposal and perhaps justify introducing TimeWindow type
