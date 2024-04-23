@@ -22,7 +22,7 @@ Rectangle {
     
     property string pseudonym
     property string timestamp
-    property int castIndex
+    property string castIndex
 
     property int commitIndex
     property string commitRoot

@@ -1,4 +1,6 @@
 using Base.StackTraces
+using Dates: Dates, UTC, now
+
 
 function select(predicate::Function, data::Vector)
 
@@ -46,42 +48,6 @@ function reset!(lm, list)
     return
 end
 
-
-# function ordinal_suffix(day)
-#     if day in [11, 12, 13]
-#         return "th"
-#     elseif day % 10 == 1
-#         return "st"
-#     elseif day % 10 == 2
-#         return "nd"
-#     elseif day % 10 == 3
-#         return "rd"
-#     else
-#         return "th"
-#     end
-# end
-
-# # Function to format the date
-# function format_date_ordinal(date)
-#     # Extract components of the date
-#     year = Dates.year(date)
-#     month = Dates.format(date, "u")
-#     day = Dates.day(date)
-#     hour = Dates.hour(date)
-#     minute = Dates.minute(date)
-    
-#     # Combine components with the ordinal suffix
-#     formatted_date = string(month, " ", day, ordinal_suffix(day), " ", year, " at ", lpad(hour, 2, '0'), ":", lpad(minute, 2, '0'))
-    
-#     return formatted_date
-# end
-
-
-# The way to print out the interval is 
-# more an UI decission. Although it could help improving 
-# prining of a proposal and perhaps justify introducing TimeWindow type
-
-
 function time_period(period::TimePeriod)
 
     if period < Dates.Second(90)
@@ -111,7 +77,7 @@ function time_period(period::TimePeriod)
 end
 
 
-function time_window(open::DateTime, closed::DateTime; time = Dates.now())
+function time_window(open::DateTime, closed::DateTime; time = Dates.now(UTC))
 
     if time < open
                 
@@ -131,7 +97,7 @@ function time_window(open::DateTime, closed::DateTime; time = Dates.now())
 
         else
 
-            str = Dates.format(closed, Dates.dateformat"dd-u-yyyy")
+            str = Dates.format(closed |> local_time, Dates.dateformat"dd-u-yyyy")
             return "Closed on $str"
 
         end
@@ -229,4 +195,15 @@ function print_simplified_backtrace(io, bt)
         println(io)
         println(io, "@ $parent_module")
     end
+end
+
+
+function local_time(utc_time::DateTime)
+    utc_offset = now() - now(UTC) # perhaps it is optimized by compiler
+    return utc_time + utc_offset
+end
+
+function utc_time(local_time::DateTime)
+    utc_offset = now() - now(UTC) 
+    return local_time - utc_offset
 end

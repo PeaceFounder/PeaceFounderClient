@@ -144,22 +144,19 @@ end
 
 setProposal(index::Integer) = setProposal(Int32(index))
 
-#using Infiltrator
-
 function setGuard()
 
     account = select(DEME_STATUS["uuid"], CLIENT)
     instance = select(PROPOSAL_METADATA["index"], account)
 
-    #Model.digest(Model.pseudonym(instance.guard.vote), Model.hasher(account.deme)) |> digest_pretty_string
-
     anchor_index = instance.proposal.anchor.index
     alias = instance.guard.ack_cast.alias
 
-    #@infiltrate
+    tracking_code = join(group_slice(Model.tracking_code(instance.guard, account.deme) |> bytes2hex |> uppercase, 4), '-')
+
     GUARD_STATUS["pseudonym"] = "#$anchor_index.$alias"
-    GUARD_STATUS["timestamp"] = timestamp = Dates.format(instance.guard.ack_cast.receipt.timestamp, "d u yyyy, HH:MM")
-    GUARD_STATUS["castIndex"] = instance.guard.ack_cast.ack.proof.index
+    GUARD_STATUS["timestamp"] = timestamp = Dates.format(instance.guard.ack_cast.receipt.timestamp |> local_time, "d u yyyy, HH:MM")
+    GUARD_STATUS["castIndex"] = string(instance.guard.ack_cast.ack.proof.index) * " ($tracking_code)"
 
     _commit = Model.commit(instance.guard)
 

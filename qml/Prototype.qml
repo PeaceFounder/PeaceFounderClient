@@ -23,10 +23,9 @@ Window{
 
         }
 
-        onPageChanged : {
-            
-            errorStatus.isRaised = true
-        }
+        /* onPageChanged : { */
+        /*     errorStatus.isRaised = true */
+        /* } */
 
         userDemes : ListModel {
 
