@@ -6,7 +6,6 @@
 
 using PeaceFounderClient
 
-
 if @isdefined(Revise)
 
     function ReviseHandler(handle)
@@ -16,7 +15,7 @@ if @isdefined(Revise)
         end
     end
 
-    PeaceFounderClient.load_view(middleware = [ReviseHandler]) do
+    PeaceFounderClient.load_view(middleware = [ReviseHandler], dir = get(ENV, "USER_DATA", "")) do
         PeaceFounderClient.setHome()
     end
 
@@ -25,3 +24,4 @@ else
         PeaceFounderClient.setHome()
     end
 end
+

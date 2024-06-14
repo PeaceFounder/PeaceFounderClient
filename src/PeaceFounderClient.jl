@@ -15,7 +15,7 @@ using .Model: Selection, Proposal
 include("utils.jl")
 include("model.jl")
 
-global CLIENT::DemeClient# = DemeClient()
+global CLIENT::DemeClient
 
 global USER_DEMES::JuliaItemModel
 global DEME_STATUS::JuliaPropertyMap
@@ -26,10 +26,9 @@ global PROPOSAL_BALLOT::JuliaItemModel
 global GUARD_STATUS::JuliaPropertyMap
 global ERROR_STATUS::JuliaPropertyMap
 
-
 function __init__()
 
-    global CLIENT = DemeClient()
+    #global CLIENT = DemeClient(dir = USER_DATA)
 
     global USER_DEMES = JuliaItemModel(DemeItem[])
 
@@ -37,9 +36,9 @@ function __init__()
         "uuid" => "UNDEFINED",
         "title" => "Local democratic community",
         "demeSpec" => "2AAE6C35 C94FCFB4 15DBE95F 408B9CE9 1EE846ED",
-        "memberIndex" => 21,
-        "commitIndex" => 89,
-        "memberCount" => 16
+        "memberIndex" => 0,
+        "commitIndex" => 0,
+        "memberCount" => 0
     )
 
     global DEME_PROPOSALS = JuliaItemModel(ProposalItem[])
@@ -73,6 +72,10 @@ function __init__()
 
     return
 end
+
+
+
+
 
 
 setHome() = reset!(USER_DEMES, DemeItem[item(i) for i in CLIENT.accounts])
@@ -152,7 +155,10 @@ function setGuard()
     anchor_index = instance.proposal.anchor.index
     alias = instance.guard.ack_cast.alias
 
-    tracking_code = join(group_slice(Model.tracking_code(instance.guard, account.deme) |> bytes2hex |> uppercase, 4), '-')
+    #tracking_code = join(group_slice(Model.tracking_code(instance.guard, account.deme) |> bytes2hex |> uppercase, 4), '-')
+    #tracking_code = join(group_slice(ProtocolSchema.tracking_code(instance.guard, account.deme) |> encode_crockford_base32, 4), '-')
+
+    tracking_code = join(group_slice(Client.tracking_code(instance.guard, account.deme), 4), '-')
 
     GUARD_STATUS["pseudonym"] = "#$anchor_index.$alias"
     GUARD_STATUS["timestamp"] = timestamp = Dates.format(instance.guard.ack_cast.receipt.timestamp |> local_time, "d u yyyy, HH:MM")
@@ -315,7 +321,9 @@ function set_qmlfunction(f::Function; name::Symbol = nameof(f), middleware = [])
     return
 end
 
-function load_view(init::Function = () -> nothing; middleware = [])
+function load_view(init::Function = () -> nothing; middleware = [], dir = "")
+
+    global CLIENT = Client.load_client(dir)
 
     for func in [setDeme, setProposal, castBallot, refreshHome, refreshDeme, refreshProposal, resetBallot, addDeme]
         set_qmlfunction(func; middleware)
@@ -338,9 +346,9 @@ function load_view(init::Function = () -> nothing; middleware = [])
     return
 end
 
-function julia_main()::Cint
+function julia_main(; dir = "")::Cint
 
-    load_view() do
+    load_view(; dir) do
         setHome()
     end
 
