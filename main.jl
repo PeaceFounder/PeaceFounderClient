@@ -20,7 +20,7 @@ if @isdefined(Revise)
     end
 
 else
-    PeaceFounderClient.load_view() do
+    PeaceFounderClient.load_view(dir = get(ENV, "USER_DATA", "")) do
         PeaceFounderClient.setHome()
     end
 end

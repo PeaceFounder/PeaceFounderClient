@@ -274,6 +274,12 @@ function addDeme(invite_str::QString)
     return
 end
 
+function closeWindow()
+
+    @emit closeWindow()
+
+    return
+end
 
 function ErrorMiddleware(handler::Function; name = nameof(handler))
 

@@ -80,6 +80,12 @@ App {
             errorStatus.title = title;
             errorStatus.message = msg;
         }
+
+        signal closeWindow()
+        onCloseWindow: {
+            Qt.quit();
+        }
+
     }
 
 }
