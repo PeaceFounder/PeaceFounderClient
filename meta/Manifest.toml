@@ -6,7 +6,7 @@ project_hash = "eb11927fbf55fd677eb3372421a1349d682b846b"
 
 [[deps.AppBundler]]
 deps = ["Artifacts", "CodecZlib", "Downloads", "Mustache", "Pkg", "Scratch", "TOML", "Tar", "ZipFile", "p7zip_jll", "squashfs_tools_jll"]
-path = "../../AppBundler"
+git-tree-sha1 = "059f1d1bcd2c385bacd6bbd311913e23341854b2"
 uuid = "40eb83ae-c93a-480c-8f39-f018b568f472"
 version = "0.1.4"
 

@@ -16,4 +16,4 @@ AppBundler.bundle_app(MacOS(:aarch64), APP_DIR, "$BUILD_DIR/peacefounder-$VERSIO
 AppBundler.bundle_app(Linux(:x86_64), APP_DIR, "$BUILD_DIR/peacefounder-$VERSION-x64.snap")
 AppBundler.bundle_app(Linux(:aarch64), APP_DIR, "$BUILD_DIR/peacefounder-$VERSION-arm64.snap")
 
-AppBundler.bundle_app(Windows(:x86_64), APP_DIR, "$BUILD_DIR/peacefounder-$VERSION-x64.zip"; path_length_threshold = 180, skip_long_paths = true)
+AppBundler.bundle_app(Windows(:x86_64), APP_DIR, "$BUILD_DIR/peacefounder-$VERSION-x64-win"; path_length_threshold = 180, skip_long_paths = true)
