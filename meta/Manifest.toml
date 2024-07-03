@@ -1,14 +1,14 @@
 # This file is machine-generated - editing it directly is not advised
 
-julia_version = "1.11.0-beta2"
+julia_version = "1.11.0-rc1"
 manifest_format = "2.0"
-project_hash = "33a0aeecadc069abf689702a35f4f7bf4dc6d337"
+project_hash = "eb11927fbf55fd677eb3372421a1349d682b846b"
 
 [[deps.AppBundler]]
-deps = ["Artifacts", "CodecZlib", "Downloads", "Infiltrator", "Mustache", "Pkg", "Scratch", "TOML", "Tar", "ZipFile", "p7zip_jll", "squashfs_tools_jll"]
+deps = ["Artifacts", "CodecZlib", "Downloads", "Mustache", "Pkg", "Scratch", "TOML", "Tar", "ZipFile", "p7zip_jll", "squashfs_tools_jll"]
 path = "../../AppBundler"
 uuid = "40eb83ae-c93a-480c-8f39-f018b568f472"
-version = "0.1.2"
+version = "0.1.4"
 
 [[deps.ArgTools]]
 uuid = "0dad84c5-d112-42e6-8d28-ef12dabb789f"
@@ -24,9 +24,9 @@ version = "1.11.0"
 
 [[deps.CodecZlib]]
 deps = ["TranscodingStreams", "Zlib_jll"]
-git-tree-sha1 = "59939d8a997469ee05c4b4944560a820f9ba0d73"
+git-tree-sha1 = "b8fe8546d52ca154ac556809e10c75e6e7430ac8"
 uuid = "944b1d66-785c-5afd-91f1-9de20f533193"
-version = "0.7.4"
+version = "0.7.5"
 
 [[deps.CompilerSupportLibraries_jll]]
 deps = ["Artifacts", "Libdl"]
@@ -55,17 +55,6 @@ version = "1.6.0"
 
 [[deps.FileWatching]]
 uuid = "7b1f6079-737a-58dc-b8bc-7a2ca5c1b5ee"
-version = "1.11.0"
-
-[[deps.Infiltrator]]
-deps = ["InteractiveUtils", "Markdown", "REPL", "UUIDs"]
-git-tree-sha1 = "38298a8eabe09e49e6f60927c9e1ca3481688ba0"
-uuid = "5903a43b-9cc3-4c30-8d17-598619ec4e9b"
-version = "1.8.3"
-
-[[deps.InteractiveUtils]]
-deps = ["Markdown"]
-uuid = "b77e0a4c-d291-57a0-90e8-8db25a27a240"
 version = "1.11.0"
 
 [[deps.IteratorInterfaceExtensions]]
@@ -167,10 +156,12 @@ version = "1.6.3"
 deps = ["Artifacts", "Dates", "Downloads", "FileWatching", "LibGit2", "Libdl", "Logging", "Markdown", "Printf", "Random", "SHA", "TOML", "Tar", "UUIDs", "p7zip_jll"]
 uuid = "44cfe95a-1eb2-52ea-b672-e2afdf69b78f"
 version = "1.11.0"
-weakdeps = ["REPL"]
 
     [deps.Pkg.extensions]
     REPLExt = "REPL"
+
+    [deps.Pkg.weakdeps]
+    REPL = "3fa0cd96-eef1-5676-8a61-b3b8758bbffb"
 
 [[deps.Preferences]]
 deps = ["TOML"]
@@ -181,11 +172,6 @@ version = "1.4.3"
 [[deps.Printf]]
 deps = ["Unicode"]
 uuid = "de0858da-6303-5e67-8744-51eddeeeb8d7"
-version = "1.11.0"
-
-[[deps.REPL]]
-deps = ["InteractiveUtils", "Markdown", "Sockets", "StyledStrings", "Unicode"]
-uuid = "3fa0cd96-eef1-5676-8a61-b3b8758bbffb"
 version = "1.11.0"
 
 [[deps.Random]]
@@ -202,14 +188,6 @@ deps = ["Dates"]
 git-tree-sha1 = "3bac05bc7e74a75fd9cba4295cde4045d9fe2386"
 uuid = "6c6a2e73-6563-6170-7368-637461726353"
 version = "1.2.1"
-
-[[deps.Sockets]]
-uuid = "6462fe0b-24de-5631-8697-dd941f90decc"
-version = "1.11.0"
-
-[[deps.StyledStrings]]
-uuid = "f489334b-da3d-4c2e-b8f0-e476e12c162b"
-version = "1.11.0"
 
 [[deps.TOML]]
 deps = ["Dates"]
@@ -234,9 +212,9 @@ uuid = "a4e569a6-e804-4fa4-b0f3-eef7a1d5b13e"
 version = "1.10.0"
 
 [[deps.TranscodingStreams]]
-git-tree-sha1 = "a947ea21087caba0a798c5e494d0bb78e3a1a3a0"
+git-tree-sha1 = "60df3f8126263c0d6b357b9a1017bb94f53e3582"
 uuid = "3bb67fe8-82b1-5028-8e26-92a6c54297fa"
-version = "0.10.9"
+version = "0.11.0"
 
     [deps.TranscodingStreams.extensions]
     TestExt = ["Test", "Random"]
@@ -281,12 +259,6 @@ version = "1.5.6+0"
 deps = ["Artifacts", "Libdl"]
 uuid = "8e850b90-86db-534c-a0d3-1478176c7d93"
 version = "5.8.0+1"
-
-[[deps.libcxxwrap_julia_jll]]
-deps = ["Artifacts", "JLLWrappers", "Libdl"]
-git-tree-sha1 = "f9797910cf52fc36aba4660dbb8d99eaa92c0ca9"
-uuid = "3eaa8342-bff7-56a5-9981-c04077f7cee7"
-version = "0.13.2+0"
 
 [[deps.nghttp2_jll]]
 deps = ["Artifacts", "Libdl"]

@@ -1,8 +1,8 @@
 # This file is machine-generated - editing it directly is not advised
 
-julia_version = "1.11.0-beta2"
+julia_version = "1.11.0-rc1"
 manifest_format = "2.0"
-project_hash = "cf684d446d9080fa9393e5cb508b831bb31452d0"
+project_hash = "98d0f44da5242c9928cd433defc4ca7148f95c96"
 
 [[deps.ArgParse]]
 deps = ["Logging", "TextWrap"]
@@ -428,7 +428,7 @@ version = "2.8.1"
 
 [[deps.PeaceFounder]]
 deps = ["ArgParse", "Base64", "CryptoGroups", "CryptoSignatures", "Dates", "DocStringExtensions", "HTTP", "HistoryTrees", "Infiltrator", "JSON3", "Nettle", "Oxygen", "Random", "Setfield", "ShuffleProofs", "StructHelpers", "StructTypes", "SwaggerMarkdown", "Tar", "Test", "URIs"]
-git-tree-sha1 = "d20b98da976c2f00f8720b3a0847c212ef0947d6"
+git-tree-sha1 = "66167c5927930ad8ef39212cef1c4d995388fd55"
 repo-rev = "master"
 repo-url = "https://github.com/PeaceFounder/PeaceFounder.jl"
 uuid = "916f7771-afe2-4319-943d-0e770c333432"

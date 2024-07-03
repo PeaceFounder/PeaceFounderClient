@@ -12,6 +12,12 @@ using Base: UUID
 using .Client: DemeClient, DemeAccount, ProposalInstance
 using .Model: Selection, Proposal
 
+using PrecompileTools
+using RelocatableFolders
+using Infiltrator
+
+const QMLDIR = @path joinpath(dirname(@__DIR__), "qml")
+
 include("utils.jl")
 include("model.jl")
 
@@ -73,13 +79,7 @@ function __init__()
     return
 end
 
-
-
-
-
-
 setHome() = reset!(USER_DEMES, DemeItem[item(i) for i in CLIENT.accounts])
-
 
 function setDeme(uuid::QString)
 
@@ -318,7 +318,6 @@ function load_prototype()
     return
 end
 
-
 function set_qmlfunction(f::Function; name::Symbol = nameof(f), middleware = [])
 
     handler(args...) = ErrorMiddleware(f; name)(args...) # To support Revise tracking for ErrorMiddleware
@@ -335,7 +334,7 @@ function load_view(init::Function = () -> nothing; middleware = [], dir = "")
         set_qmlfunction(func; middleware)
     end
 
-    loadqml((@__DIR__) * "/../qml/Main.qml"; 
+    loadqml(joinpath(QMLDIR, "Main.qml"); 
             _USER_DEMES = USER_DEMES,
             _DEME_STATUS = DEME_STATUS,
             _DEME_PROPOSALS = DEME_PROPOSALS,
@@ -343,7 +342,6 @@ function load_view(init::Function = () -> nothing; middleware = [], dir = "")
             _PROPOSAL_STATUS = PROPOSAL_STATUS,
             _PROPOSAL_BALLOT = PROPOSAL_BALLOT,
             _GUARD_STATUS = GUARD_STATUS
-            #_ERROR_STATUS = ERROR_STATUS
             )
 
     init() # What use do I have here actually?
@@ -359,5 +357,20 @@ function julia_main(; dir = "")::Cint
     end
 
 end
+
+
+@setup_workload begin
+    dir = joinpath(dirname(@__DIR__), "test", "sample") # This is not compiled so perhaps it's fine?
+    __init__()
+    @compile_workload begin
+        load_view(; dir) do
+            setHome()
+            setDeme(Base.UUID("033F9207-E4E4-9AAA-02EA-5DDF5E450DD8"))
+            closeWindow()
+        end
+
+    end
+end
+
 
 end

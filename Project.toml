@@ -5,14 +5,19 @@ version = "0.1.0"
 
 [deps]
 Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"
-HTTP = "cd3eb016-35fb-5094-929b-558a96fad6f3"
+Infiltrator = "5903a43b-9cc3-4c30-8d17-598619ec4e9b"
 PeaceFounder = "916f7771-afe2-4319-943d-0e770c333432"
+PrecompileTools = "aea7be01-6a6a-4083-8856-8a6e6704d82a"
 QML = "2db162a6-7e43-52c3-8d84-290c1c42d82a"
 Qt65Compat_jll = "f5784262-74e5-52be-b835-f3e8a3cf8710"
+RelocatableFolders = "05181044-ff0b-4ac5-8273-598c1e38db00"
 
 [compat]
+Infiltrator = "1.8.3"
 PeaceFounder = "0.4.0"
+PrecompileTools = "1.2.1"
 QML = "0.9.0"
+RelocatableFolders = "1.0.1"
 
 [bundle]
 APP_DESCRIPTION = "A voting client for PeaceFounder evoting system."
@@ -22,4 +27,4 @@ APP_SUMMARY = "A voting client for PeaceFounder evoting system."
 BUNDLE_IDENTIFIER = "org.peacefounder.client"
 PUBLISHER = "CN=JanisErdmanis"
 PUBLISHER_DISPLAY_NAME = "Janis Erdmanis"
-WITH_SPLASH_SCREEN = true
+WITH_SPLASH_SCREEN = false

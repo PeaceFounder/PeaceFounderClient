@@ -1,3 +1,2 @@
 [deps]
 AppBundler = "40eb83ae-c93a-480c-8f39-f018b568f472"
-libcxxwrap_julia_jll = "3eaa8342-bff7-56a5-9981-c04077f7cee7"
