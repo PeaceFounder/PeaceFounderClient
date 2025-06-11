@@ -71,8 +71,8 @@ jobs:
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
-          name: build${{ matrix.suffix }}
-          path: build/peacefounder{{ matrix.suffix }}
+          name: peacefounder${{ matrix.suffix }}
+          path: build/peacefounder${{ matrix.suffix }}
           retention-days: 1
 
   # Job 2: Upload all artifacts in a single job
