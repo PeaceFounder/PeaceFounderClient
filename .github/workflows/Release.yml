@@ -61,12 +61,12 @@ jobs:
         uses: julia-actions/cache@v1
       
       - name: Install AppBundler
-        run: julia --project=meta 'using Pkg; Pkg.instantiate()'
+        run: julia --project=meta -e 'using Pkg; Pkg.instantiate()'
 
       - name: Build installer
         run: |
           mkdir -p build
-          ${{ matrix.prefix }} julia -e 'using AppBundler; using Pkg.BinaryPlatforms; AppBundler.build_app(${{ matrix.binary_platform }}, pwd(), "build/qmlapp${{ matrix.suffix }}", precompile=true, incremental=false)'
+          ${{ matrix.prefix }} julia --project=meta -e 'using AppBundler; using Pkg.BinaryPlatforms; AppBundler.build_app(${{ matrix.binary_platform }}, pwd(), "build/qmlapp${{ matrix.suffix }}", precompile=true, incremental=false)'
       # Store the built file as an artifact
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
