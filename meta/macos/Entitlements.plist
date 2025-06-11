@@ -3,7 +3,7 @@
   <dict>
 
     <key>com.apple.security.app-sandbox</key>
-    <false/>
+    <true/>
 
     <key>com.apple.security.automation.apple-events</key>
     <true/>
@@ -30,6 +30,14 @@
     <true/>
 
     <key>com.apple.security.get-task-allow</key>
+    <true/>
+
+    <key>com.apple.security.temporary-exception.mach-lookup.global-name</key>
+    <array>
+      <string>com.apple.coreservices.launchservicesd</string>
+    </array>
+
+    <key>com.apple.security.network.client</key>
     <true/>
 
   </dict>

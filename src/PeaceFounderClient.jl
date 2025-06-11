@@ -14,9 +14,8 @@ using .Model: Selection, Proposal
 
 using PrecompileTools
 using RelocatableFolders
-using Infiltrator
 
-const QMLDIR = @path joinpath(dirname(@__DIR__), "qml")
+#const QMLDIR = @path joinpath(dirname(@__DIR__), "qml")
 
 include("utils.jl")
 include("model.jl")
@@ -326,7 +325,7 @@ function set_qmlfunction(f::Function; name::Symbol = nameof(f), middleware = [])
     return
 end
 
-function load_view(init::Function = () -> nothing; middleware = [], dir = "")
+function load_view(init::Function = () -> nothing; middleware = [], dir = "", qmldir = joinpath(dirname(@__DIR__), "qml"))
 
     global CLIENT = Client.load_client(dir)
 
@@ -334,7 +333,7 @@ function load_view(init::Function = () -> nothing; middleware = [], dir = "")
         set_qmlfunction(func; middleware)
     end
 
-    loadqml(joinpath(QMLDIR, "Main.qml"); 
+    loadqml(joinpath(qmldir, "Main.qml"); 
             _USER_DEMES = USER_DEMES,
             _DEME_STATUS = DEME_STATUS,
             _DEME_PROPOSALS = DEME_PROPOSALS,
@@ -362,6 +361,7 @@ end
 @setup_workload begin
     dir = joinpath(dirname(@__DIR__), "test", "sample") # This is not compiled so perhaps it's fine?
     __init__()
+
     @compile_workload begin
         load_view(; dir) do
             setHome()

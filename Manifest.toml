@@ -2,7 +2,7 @@
 
 julia_version = "1.11.0-rc1"
 manifest_format = "2.0"
-project_hash = "98d0f44da5242c9928cd433defc4ca7148f95c96"
+project_hash = "3f5b0e0ee4abf40e5b11595c2435bdf0b9b38f78"
 
 [[deps.ArgParse]]
 deps = ["Logging", "TextWrap"]
@@ -468,9 +468,9 @@ version = "1.11.0"
 
 [[deps.QML]]
 deps = ["ColorTypes", "CxxWrap", "Libdl", "MacroTools", "Observables", "Qt6Wayland_jll", "Requires", "jlqml_jll"]
-git-tree-sha1 = "1e76a71a561388158bb2fe61ad701584e0bad103"
+git-tree-sha1 = "b6ead10a07fdd98ff87bab7adfe6fdb149ec4f47"
 uuid = "2db162a6-7e43-52c3-8d84-290c1c42d82a"
-version = "0.9.0"
+version = "0.9.1"
 
 [[deps.Qt65Compat_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl", "Qt6Base_jll", "Qt6Declarative_jll", "Qt6ShaderTools_jll"]
