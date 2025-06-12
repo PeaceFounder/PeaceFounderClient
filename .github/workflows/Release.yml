@@ -65,8 +65,8 @@ jobs:
 
       - name: Build installer
         env: 
-             MACOS_PFX_PASSWORD: ${{ github.MACOS_PFX_PASSWORD }}
-             WINDOWS_PFX_PASSWORD: ${{ github.WINDOWS_PFX_PASSWORD }}
+          MACOS_PFX_PASSWORD: ${{ secrets.MACOS_PFX_PASSWORD }}
+          WINDOWS_PFX_PASSWORD: ${{ secrets.WINDOWS_PFX_PASSWORD }}
         run: |
           mkdir -p build
           ${{ matrix.prefix }} julia --project=meta -e 'using AppBundler; using Pkg.BinaryPlatforms; AppBundler.build_app(${{ matrix.binary_platform }}, pwd(), "build/peacefounder${{ matrix.suffix }}", precompile=true, incremental=false)'
