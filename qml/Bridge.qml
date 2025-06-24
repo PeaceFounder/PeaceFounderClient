@@ -1,4 +1,4 @@
-import org.julialang
+import jlqml
 
 App {
     width: parent.width

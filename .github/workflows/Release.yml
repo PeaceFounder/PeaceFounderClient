@@ -4,9 +4,9 @@ on:
   workflow_dispatch:  # Manual trigger for testing
     inputs:
       tag_name:
-        description: 'Tag name for testing (e.g., v1.0.0-test)'
+        description: 'Tag name for testing (e.g., v0.0.1-test)'
         required: true
-        default: 'v1.0.0-test'
+        default: 'v0.0.1-test'
       skip_upload:
         description: 'Skip upload (test build only)'
         required: false

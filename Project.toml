@@ -1,7 +1,7 @@
 name = "PeaceFounderClient"
 uuid = "e27653ee-9918-43bd-96c3-a19beeb55963"
 authors = ["Janis Erdmanis <janiserdmanis@protonmail.ch>"]
-version = "0.1.0"
+version = "0.1.2"
 
 [deps]
 Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"
@@ -10,11 +10,6 @@ PrecompileTools = "aea7be01-6a6a-4083-8856-8a6e6704d82a"
 QML = "2db162a6-7e43-52c3-8d84-290c1c42d82a"
 Qt65Compat_jll = "f5784262-74e5-52be-b835-f3e8a3cf8710"
 RelocatableFolders = "05181044-ff0b-4ac5-8273-598c1e38db00"
-
-[compat]
-PrecompileTools = "1.2.1"
-QML = "0.9.2"
-Qt65Compat_jll = "6.7.1"
 
 [bundle]
 APP_DESCRIPTION = "A voting client for PeaceFounder evoting system."
