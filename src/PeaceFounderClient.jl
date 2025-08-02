@@ -23,7 +23,7 @@ include("model.jl")
 global CLIENT::DemeClient
 
 global USER_DEMES::JuliaItemModel
-global DEME_STATUS::JuliaPropertyMap
+global DEME_STATUS::JuliaPropertyMap 
 global DEME_PROPOSALS::JuliaItemModel 
 global PROPOSAL_METADATA::JuliaPropertyMap
 global PROPOSAL_STATUS::JuliaPropertyMap
@@ -80,9 +80,9 @@ end
 
 setHome() = reset!(USER_DEMES, DemeItem[item(i) for i in CLIENT.accounts])
 
-function setDeme(uuid::QString)
+function setDeme(uuid::QString, memberIndex::Integer)
 
-    (; commit, proposals, deme, guard) = select(uuid, CLIENT)
+    (; commit, proposals, deme, guard) = select(uuid, memberIndex, CLIENT)
 
     reset!(DEME_PROPOSALS, ProposalItem[item(instance) for instance in proposals])
     
@@ -99,12 +99,12 @@ function setDeme(uuid::QString)
     return
 end
 
-setDeme(uuid::UUID) = setDeme(QString(string(uuid)))
+setDeme(uuid::UUID, memberIndex::Integer) = setDeme(QString(string(uuid)), memberIndex)
 
 
 function setProposal(index::Int32)
 
-    account = select(DEME_STATUS["uuid"], CLIENT)
+    account = select(DEME_STATUS["uuid"], DEME_STATUS["memberIndex"], CLIENT)
     instance = select(index, account)
 
     PROPOSAL_METADATA["index"] = instance.index
@@ -148,7 +148,7 @@ setProposal(index::Integer) = setProposal(Int32(index))
 
 function setGuard()
 
-    account = select(DEME_STATUS["uuid"], CLIENT)
+    account = select(DEME_STATUS["uuid"], DEME_STATUS["memberIndex"], CLIENT)
     instance = select(PROPOSAL_METADATA["index"], account)
 
     anchor_index = instance.proposal.anchor.index
@@ -177,10 +177,14 @@ function castBallot()
     choices = [i.choice for i in items]
 
     uuid = UUID(DEME_STATUS["uuid"])
+    memberIndex = DEME_STATUS["memberIndex"]
     index = PROPOSAL_METADATA["index"]
 
     try
-        Client.cast_vote!(CLIENT, uuid, index, Selection(choices[1]))
+        # First picking out an account
+        # Then cast vote on a particular proposal
+        account = select(uuid, memberIndex, CLIENT)
+        Client.cast_vote!(account, index, Selection(choices[1])) # need to add memberIndex
     catch error
 
         bt = catch_backtrace()
@@ -204,7 +208,7 @@ function castBallot()
     end
 
     setProposal(index)
-    setDeme(uuid)
+    setDeme(uuid, memberIndex)
 
     return
 end
@@ -218,9 +222,10 @@ function refreshHome()
 end
 
 function refreshDeme()
-
-    Client.update_deme!(CLIENT, UUID(string(DEME_STATUS["uuid"])))
-    setDeme(DEME_STATUS["uuid"])
+    
+    account = select(DEME_STATUS["uuid"], DEME_STATUS["memberIndex"], CLIENT)
+    Client.update_deme!(account)
+    setDeme(DEME_STATUS["uuid"], DEME_STATUS["memberIndex"])
 
     return
 end
@@ -230,7 +235,7 @@ function refreshProposal()
     uuid = UUID(DEME_STATUS["uuid"])
     index = PROPOSAL_METADATA["index"]
 
-    account = select(DEME_STATUS["uuid"], CLIENT)
+    account = select(DEME_STATUS["uuid"], DEME_STATUS["memberIndex"], CLIENT)
     instance = select(PROPOSAL_METADATA["index"], account)
     
     if !isnothing(instance.guard)
@@ -365,7 +370,7 @@ end
     @compile_workload begin
         load_view(; dir) do
             setHome()
-            setDeme(Base.UUID("033F9207-E4E4-9AAA-02EA-5DDF5E450DD8"))
+            setDeme(Base.UUID("033F9207-E4E4-9AAA-02EA-5DDF5E450DD8"), 17)
             closeWindow()
         end
 

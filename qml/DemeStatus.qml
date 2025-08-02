@@ -130,7 +130,6 @@ Rectangle {
             Text {
 
                 anchors.bottom : parent.bottom
-
                 text : "Member: " + card.memberIndex
                 color : Style.verified //"#20741C"
                 font.pointSize: 14

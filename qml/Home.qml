@@ -11,7 +11,7 @@ AppPage {
     title : "Home"
     backVisible : false
     
-    signal demeCard(string uuid)
+    signal demeCard(string uuid, int memberIndex) // add int memberIndex, page.memberIndex
     signal addDeme(string invite)
 
     property alias userDemes : demes_view.model
@@ -85,10 +85,50 @@ AppPage {
                         anchors.right: parent.right
                         font.pointSize: 9 
                         //text: model.uuid
-                        text : uuid
+                        text : uuid  // I can add memberIndex
                         anchors.topMargin: 4
                         anchors.rightMargin: 4
                         color : Style.textTeritary
+                    }
+
+
+                    /* Text { */
+                    /*     anchors.bottom: parent.bottom */
+                    /*     anchors.left: parent.left */
+                    /*     font.pointSize: 9  */
+                    /*     text : memberIndex   */
+                    /*     anchors.bottomMargin: 5 */
+                    /*     anchors.leftMargin: 5 */
+                    /*     color : Style.textTeritary */
+                    /* } */
+
+
+                    Row {
+                        
+                        anchors.left: parent.left
+                        anchors.bottom: parent.bottom
+                        anchors.bottomMargin: 5
+                        anchors.leftMargin: 5
+
+                        spacing : 2
+
+                        height : 12
+
+                        Icon {
+                            anchors.bottom : parent.bottom
+                            anchors.bottomMargin: 2
+                            height: 14
+                            source: "images/Member.png"
+                            color : Style.textSecondary
+                        }
+
+                        Text {
+                            anchors.bottom : parent.bottom
+                            font.pointSize: 12
+                            color : Style.textSecondary
+                            text : memberIndex
+                        }
+
                     }
 
 
@@ -104,6 +144,7 @@ AppPage {
                         height : 12
 
                         Text {
+                            anchors.bottom : parent.bottom
                             font.pointSize: 12
                             color : Style.textSecondary
                             //text: "" + model.groupsize
@@ -112,18 +153,18 @@ AppPage {
 
                         Icon {
                             anchors.bottom : parent.bottom
+                            anchors.bottomMargin: 3
                             source : "images/GroupSize.png"
                             height : 10
                             color : Style.textSecondary
                         }
-
 
                     }
                     
 
                     MouseArea {
                         anchors.fill : parent
-                        onClicked : demeCard(uuid)
+                        onClicked : demeCard(uuid, memberIndex)
                     }
 
                 }

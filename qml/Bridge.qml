@@ -8,7 +8,7 @@ App {
 
     onAddDeme : invite => Julia.addDeme(invite)
 
-    onSetDeme : uuid => Julia.setDeme(uuid)
+    onSetDeme : (uuid, memberIndex) => Julia.setDeme(uuid, memberIndex)
 
     onSetProposal : index => Julia.setProposal(index)
 

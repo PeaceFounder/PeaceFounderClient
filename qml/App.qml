@@ -88,7 +88,7 @@ Item {
     signal castBallot
     signal resetBallot
 
-    signal setDeme(string uuid)
+    signal setDeme(string uuid, int memberIndex)
     signal setProposal(int index)
     
     signal refreshHome
@@ -114,8 +114,8 @@ Item {
 
             onRefresh : app.refreshHome() 
 
-            onDemeCard : uuid => {
-                app.setDeme(uuid)
+            onDemeCard : (uuid, memberIndex) => {
+                app.setDeme(uuid, memberIndex)
                 app.page = 2
             }
 

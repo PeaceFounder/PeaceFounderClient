@@ -3,6 +3,7 @@ mutable struct DemeItem
     title::String
     #commitIndex::Int # commitIndex
     memberCount::Int # groupSize
+    memberIndex::Int # Perhaps I could add nothing here
 end
 
 
@@ -29,8 +30,9 @@ function item(account::DemeAccount)
     uuid = uppercase(string(account.deme.uuid))
     title = account.deme.title
     memberCount = account.commit.state.member_count # could shorten state(account).member_count
+    memberIndex = account.guard.ack.proof.index
 
-    return DemeItem(uuid, title, memberCount)
+    return DemeItem(uuid, title, memberCount, memberIndex)
 end
 
 

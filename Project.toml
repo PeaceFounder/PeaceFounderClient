@@ -1,7 +1,7 @@
 name = "PeaceFounderClient"
 uuid = "e27653ee-9918-43bd-96c3-a19beeb55963"
 authors = ["Janis Erdmanis <janiserdmanis@protonmail.ch>"]
-version = "0.1.2"
+version = "0.1.3"
 
 [deps]
 Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"

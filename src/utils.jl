@@ -15,8 +15,9 @@ select(predicate::Function, model::QML.JuliaItemModelAllocated) = select(predica
 
 select(predicate::Function) = collection -> select(predicate, collection)
 
-select(uuid::UUID, client::Client.DemeClient) = select(account -> account.deme.uuid == uuid, client.accounts)
-select(uuid::AbstractString, client::Client.DemeClient) = select(UUID(uuid), client)
+# account.guard.ack.proof.index
+select(uuid::UUID, memberIndex::Integer, client::Client.DemeClient) = select(account -> account.deme.uuid == uuid && account.guard.ack.proof.index == memberIndex, client.accounts)
+select(uuid::AbstractString, memberIndex::Integer, client::Client.DemeClient) = select(UUID(uuid), memberIndex, client)
 
 select(index::Integer, account::DemeAccount) = select(instance -> instance.index == index, account.proposals)
 select(uuid::UUID, account::DemeAccount) = select(instance -> instance.proposal.uuid == uuid, account.instances)
