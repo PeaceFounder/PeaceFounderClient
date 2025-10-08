@@ -43,7 +43,7 @@ jobs:
             prefix: xvfb-run -s '-screen 0 1024x768x24'
           
           # Windows builds
-          - runner: windows-latest
+          - runner: windows-2022
             binary_platform: Windows(:x86_64)
             suffix: -windows-x86_64.msix
             prefix: ""  # Default empty prefix    
