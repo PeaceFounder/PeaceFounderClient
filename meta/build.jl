@@ -1,21 +1,31 @@
 using AppBundler
 
-import TOML
-import Pkg.BinaryPlatforms: Linux, MacOS, Windows
-
 APP_DIR = dirname(@__DIR__)
 
-BUILD_DIR = joinpath(APP_DIR, "build")
-mkpath(BUILD_DIR)
+if get(ENV, "TESTRUN", "false") == "true"
+    BUILD_DIR = mktempdir()
+else
+    BUILD_DIR = joinpath(APP_DIR, "build")
+    mkpath(BUILD_DIR)
+end
+@info "Build products will be created at $BUILD_DIR"
 
-VERSION = TOML.parsefile("$APP_DIR/Project.toml")["version"]
+precompile = get(ENV, "PRECOMPILE", "true") == "true"
+incremental = get(ENV, "INCREMENTAL", "false") == "true"
+buildall = get(ENV, "BUILD_ALL", "false") == "true"
 
-#AppBundler.build_app(MacOS(:x86_64), APP_DIR, "$BUILD_DIR/peacefounder-$VERSION-x64.dmg")
-AppBundler.build_app(MacOS(:aarch64), APP_DIR, "$BUILD_DIR/peacefounder-$VERSION-arm64.dmg"; pfx_path=nothing)
+target_arch = Symbol(get(ENV, "TARGET_ARCH", Sys.ARCH))
+version = AppBundler.get_version(APP_DIR)
+target_name = "PeaceFounder-$version-$(target_arch)"
 
-#AppBundler.build_app(Linux(:x86_64), APP_DIR, "$BUILD_DIR/peacefounder-$VERSION-x64.snap")
-#AppBundler.build_app(Linux(:aarch64), APP_DIR, "$BUILD_DIR/peacefounder-$VERSION-arm64"; incremental=true, precompile=false)
+if buildall || Sys.islinux()
+    AppBundler.build_app(Linux(target_arch), APP_DIR, "$BUILD_DIR/$target_name.snap"; precompile, incremental)
+end
 
-#AppBundler.build_app(Windows(:x86_64), APP_DIR, "$BUILD_DIR/peacefounder-$VERSION-x64-win"; path_length_threshold = 180, skip_long_paths = true)
+if buildall || Sys.iswindows()
+    AppBundler.build_app(Windows(target_arch), APP_DIR, "$BUILD_DIR/$target_name.msix"; precompile, incremental)
+end
 
-#AppBundler.build_app(Windows(:x86_64), APP_DIR, joinpath(homedir(), "Documents", "peacefounder-$VERSION-x64-win.msix"); path_length_threshold = 180, skip_long_paths = true, precompile=false, pfx_path=nothing)
+if buildall || Sys.isapple()
+    AppBundler.build_app(MacOS(target_arch), APP_DIR, "$BUILD_DIR/$target_name.dmg"; precompile, incremental)
+end
