@@ -378,8 +378,12 @@ end
 end
 
 
-function (@main)(ARGS; qmldir = joinpath(dirname(@__DIR__), "qml"))
 
+
+
+function (@main)(ARGS; qmldir = joinpath(Base.pkgdir(@__MODULE__), "qml"))
+
+    @info "QMLDIR is $qmldir"
     #window = create_splash_window()
 
     if isdefined(Main, :Revise)

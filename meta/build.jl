@@ -13,6 +13,7 @@ end
 precompile = get(ENV, "PRECOMPILE", "true") == "true"
 incremental = get(ENV, "INCREMENTAL", "false") == "true"
 buildall = get(ENV, "BUILD_ALL", "false") == "true"
+adhoc_signing = get(ENV, "ADHOC_SIGNING", "false") == "true"
 
 target_arch = Symbol(get(ENV, "TARGET_ARCH", Sys.ARCH))
 version = AppBundler.get_version(APP_DIR)
@@ -27,5 +28,5 @@ if buildall || Sys.iswindows()
 end
 
 if buildall || Sys.isapple()
-    AppBundler.build_app(MacOS(target_arch), APP_DIR, "$BUILD_DIR/$target_name.dmg"; precompile, incremental)
+    AppBundler.build_app(MacOS(target_arch), APP_DIR, "$BUILD_DIR/$target_name.dmg"; precompile, incremental, adhoc_signing)
 end
