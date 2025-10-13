@@ -378,4 +378,33 @@ end
 end
 
 
+function (@main)(ARGS; qmldir = joinpath(dirname(@__DIR__), "qml"))
+
+    #window = create_splash_window()
+
+    if isdefined(Main, :Revise)
+
+        function ReviseHandler(handle)
+            return function(args...)
+                Main.Revise.revise()
+                invokelatest(handle, args...)
+            end
+        end
+
+        load_view(middleware = [ReviseHandler], dir = get(ENV, "USER_DATA", "")) do
+            setHome()
+        end
+
+    else
+        load_view(; dir = get(ENV, "USER_DATA", ""), qmldir) do
+            setHome()
+        end
+    end
+
+    return
+end
+
+export main
+
+
 end
