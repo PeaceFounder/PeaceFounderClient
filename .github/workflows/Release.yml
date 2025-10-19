@@ -32,12 +32,28 @@ jobs:
             os: linux
             arch: aarch64
             xvfb: true
-          - runner: windows-2022
+          - runner: windows-latest
             os: windows
             arch: x86_64
     
     steps:
       - uses: actions/checkout@v4
+
+      - name: Remove System32 OpenSSL DLLs (Windows)
+        if: runner.os == 'Windows'
+        run: |
+          $system32 = "C:\Windows\System32"
+          
+          foreach ($dll in @("libcrypto-3-x64.dll", "libssl-3-x64.dll")) {
+            $path = Join-Path $system32 $dll
+            if (Test-Path $path) {
+              Remove-Item -Path $path -Force
+              Write-Host "Removed $dll from System32"
+            } else {
+              Write-Host "$dll not found in System32"
+            }
+          }
+        shell: pwsh
 
       - uses: julia-actions/setup-julia@v2
         with:
