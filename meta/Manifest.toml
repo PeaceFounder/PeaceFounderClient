@@ -16,8 +16,10 @@ weakdeps = ["SparseArrays", "StaticArrays"]
     AdaptStaticArraysExt = "StaticArrays"
 
 [[deps.AppBundler]]
-deps = ["AppBundlerUtils_jll", "AppEnv", "Artifacts", "Base64", "CodecZlib", "Conda", "Downloads", "FileIO", "ImageCore", "ImageIO", "ImageTransformations", "Libdl", "Makemsix_jll", "Mustache", "OpenSSL_jll", "Pkg", "Printf", "PyCall", "Random", "Scratch", "TOML", "Tar", "UUIDs", "Xorriso_jll", "libdmg_hfsplus_jll", "osslsigncode_jll", "rcodesign_jll", "squashfs_tools_jll"]
-git-tree-sha1 = "b453a0d89476a25e339700b6cf1e8563f93fbbb3"
+deps = ["AppBundlerUtils_jll", "AppEnv", "Artifacts", "Base64", "CodecZlib", "Conda", "Downloads", "FileIO", "ImageCore", "ImageIO", "ImageTransformations", "LibGit2", "Libdl", "Makemsix_jll", "Mustache", "OpenSSL_jll", "Pkg", "Printf", "PyCall", "Random", "Scratch", "TOML", "Tar", "UUIDs", "Xorriso_jll", "libdmg_hfsplus_jll", "osslsigncode_jll", "rcodesign_jll", "squashfs_tools_jll"]
+git-tree-sha1 = "d678127802890e385b92dbf7e02aa0ab034c89ae"
+repo-rev = "main"
+repo-url = "https://github.com/PeaceFounder/AppBundler.jl"
 uuid = "40eb83ae-c93a-480c-8f39-f018b568f472"
 version = "0.6.0"
 
