@@ -362,7 +362,6 @@ function julia_main(; dir = "")::Cint
 
 end
 
-
 @setup_workload begin
     dir = joinpath(dirname(@__DIR__), "test", "sample") # This is not compiled so perhaps it's fine?
     __init__()
@@ -376,10 +375,6 @@ end
 
     end
 end
-
-
-
-
 
 function (@main)(ARGS; qmldir = joinpath(Base.pkgdir(@__MODULE__), "qml"))
 

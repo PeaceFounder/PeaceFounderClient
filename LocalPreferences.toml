@@ -1,0 +1,16 @@
+[PeaceFounderClient]
+assets = ["qml"]
+
+[AppBundler]
+app_name = "PeaceFounder"
+app_description = "A voting client for PeaceFounder evoting system."
+app_summary = "A voting client for PeaceFounder evoting system."
+bundle_identifier = "org.peacefounder.client"
+publisher = "CN=JanisErdmanis"
+publisher_name = "Janis Erdmanis"
+
+windowed = true
+bundler = "juliaimg"
+juliaimg_incremental = false
+juliaimg_sysimg = ["PeaceFounderClient"]
+juliaimg_selective_assets = true
