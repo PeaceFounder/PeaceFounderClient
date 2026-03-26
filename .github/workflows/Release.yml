@@ -45,7 +45,7 @@ jobs:
       - name: Install dependencies
         run: julia --project=meta -e 'using Pkg; Pkg.instantiate()'
       - name: Install JuliaC
-        run: julia -e 'using Pkg; Pkg.Apps.add("JuliaC", version="2.3")'
+        run: julia -e 'using Pkg; Pkg.Apps.add(name = "JuliaC", version="0.2.3")'
       - name: Build
         env: 
           PASSWORD: ${{ matrix.os == 'macos' && secrets.MACOS_PFX_PASSWORD || matrix.os == 'windows' && secrets.WINDOWS_PFX_PASSWORD || '' }}

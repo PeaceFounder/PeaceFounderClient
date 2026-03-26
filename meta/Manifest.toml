@@ -17,11 +17,11 @@ weakdeps = ["SparseArrays", "StaticArrays"]
 
 [[deps.AppBundler]]
 deps = ["AppBundlerUtils_jll", "AppEnv", "Artifacts", "Base64", "CodecZlib", "Conda", "Downloads", "FileIO", "ImageCore", "ImageIO", "ImageTransformations", "LibGit2", "Libdl", "Makemsix_jll", "Mustache", "OpenSSL_jll", "Pkg", "Preferences", "Printf", "PyCall", "Random", "Scratch", "TOML", "Tar", "UUIDs", "Xorriso_jll", "libdmg_hfsplus_jll", "osslsigncode_jll", "rcodesign_jll", "squashfs_tools_jll"]
-git-tree-sha1 = "b7590d9e69ff44c3fdba8622108ac85234afe03d"
+git-tree-sha1 = "28e17036f977d167f00010b2be6df34cb448cd44"
 repo-rev = "main"
 repo-url = "https://github.com/PeaceFounder/AppBundler.jl"
 uuid = "40eb83ae-c93a-480c-8f39-f018b568f472"
-version = "0.6.0"
+version = "1.0.0"
 
 [[deps.AppBundlerUtils_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl"]
