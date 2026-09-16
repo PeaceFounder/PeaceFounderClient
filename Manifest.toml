@@ -162,10 +162,10 @@ version = "0.0.20230411+1"
 
 [[deps.ExceptionUnwrapping]]
 deps = ["Test"]
-git-tree-sha1 = "d36f682e590a83d63d1c7dbd287573764682d12a"
+git-tree-sha1 = "4e468f521e1f9f86891cb07186de5df90360a666"
 registries = "General"
 uuid = "460bff9d-24e4-43bc-9d9f-a8973cb893f4"
-version = "0.1.11"
+version = "0.1.12"
 
 [[deps.Expat_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl"]
@@ -511,7 +511,7 @@ version = "0.5.0"
 deps = ["AppEnv", "Dates", "PeaceFounder", "PrecompileTools", "QML", "Qt65Compat_jll"]
 path = "."
 uuid = "e27653ee-9918-43bd-96c3-a19beeb55963"
-version = "0.1.4"
+version = "0.1.5"
 
 [[deps.PrecompileTools]]
 deps = ["Preferences"]

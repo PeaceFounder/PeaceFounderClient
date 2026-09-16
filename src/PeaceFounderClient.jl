@@ -378,6 +378,7 @@ function (@main)(ARGS)
     AppEnv.init()
     qmldir = joinpath(Base.pkgdir(@__MODULE__), "qml")
     @info "QMLDIR is $qmldir"
+    @info "USER_DATA is $(AppEnv.USER_DATA)"
 
     if isdefined(Main, :Revise)
 
@@ -388,12 +389,12 @@ function (@main)(ARGS)
             end
         end
 
-        load_view(middleware = [ReviseHandler], dir = get(ENV, "USER_DATA", "")) do
+        load_view(middleware = [ReviseHandler], dir = AppEnv.USER_DATA) do
             setHome()
         end
 
     else
-        load_view(; dir = get(ENV, "USER_DATA", ""), qmldir) do
+        load_view(; dir = AppEnv.USER_DATA, qmldir) do
             setHome()
         end
     end
