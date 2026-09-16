@@ -11,9 +11,9 @@ QML.loadqmljll(Qt65Compat_jll)
 using Base: UUID
 using .Client: DemeClient, DemeAccount, ProposalInstance
 using .Model: Selection, Proposal
-
 using PrecompileTools
-using RelocatableFolders
+using AppEnv
+
 
 #const QMLDIR = @path joinpath(dirname(@__DIR__), "qml")
 
@@ -153,9 +153,6 @@ function setGuard()
 
     anchor_index = instance.proposal.anchor.index
     alias = instance.guard.ack_cast.alias
-
-    #tracking_code = join(group_slice(Model.tracking_code(instance.guard, account.deme) |> bytes2hex |> uppercase, 4), '-')
-    #tracking_code = join(group_slice(ProtocolSchema.tracking_code(instance.guard, account.deme) |> encode_crockford_base32, 4), '-')
 
     tracking_code = join(group_slice(Client.tracking_code(instance.guard, account.deme), 4), '-')
 
@@ -376,10 +373,11 @@ end
     end
 end
 
-function (@main)(ARGS; qmldir = joinpath(Base.pkgdir(@__MODULE__), "qml"))
+function (@main)(ARGS)
 
+    AppEnv.init()
+    qmldir = joinpath(Base.pkgdir(@__MODULE__), "qml")
     @info "QMLDIR is $qmldir"
-    #window = create_splash_window()
 
     if isdefined(Main, :Revise)
 

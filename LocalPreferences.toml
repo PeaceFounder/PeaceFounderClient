@@ -10,7 +10,7 @@ publisher = "CN=JanisErdmanis"
 publisher_name = "Janis Erdmanis"
 
 windowed = true
-bundler = "juliaimg"
+bundler = "juliac"
 juliaimg_incremental = false
 juliaimg_sysimg = ["PeaceFounderClient"]
 juliaimg_selective_assets = true
