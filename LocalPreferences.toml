@@ -14,3 +14,6 @@ bundler = "juliac"
 juliaimg_incremental = false
 juliaimg_sysimg = ["PeaceFounderClient"]
 juliaimg_selective_assets = true
+
+msix.bootstrapper = true
+dmg.backend = "hfsplus"

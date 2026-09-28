@@ -1,8 +1,8 @@
 # This file is machine-generated - editing it directly is not advised
 
-julia_version = "1.13.0"
+julia_version = "1.13.1"
 manifest_format = "2.1"
-project_hash = "e519b42ac30dbf39b1d45101a7bc0eb9d1f09849"
+project_hash = "a8ba4fb44377ef9c17d92e8bed17c199bad46c3a"
 
 [[deps.Adapt]]
 deps = ["LinearAlgebra"]
@@ -17,9 +17,9 @@ weakdeps = ["SparseArrays", "StaticArrays"]
     AdaptStaticArraysExt = "StaticArrays"
 
 [[deps.AppBundler]]
-deps = ["AppBundlerUtils_jll", "AppEnv", "Artifacts", "Base64", "CodecZlib", "Conda", "Downloads", "FileIO", "ImageCore", "ImageIO", "ImageTransformations", "LibGit2", "Libdl", "Makemsix_jll", "Mustache", "OpenSSL_CLI_jll", "Pkg", "Printf", "PyCall", "Random", "Scratch", "TOML", "Tar", "UUIDs", "Xorriso_jll", "libdmg_hfsplus_jll", "osslsigncode_jll", "rcodesign_jll", "squashfs_tools_jll"]
-git-tree-sha1 = "e55e470273b96c183003885a8f5a4494e3c05e48"
-repo-rev = "maintenance-features"
+deps = ["AppBundlerUtils_jll", "AppEnv", "Artifacts", "Base64", "CodecZlib", "Conda", "Dates", "Downloads", "FileIO", "ImageCore", "ImageIO", "ImageTransformations", "LibGit2", "Libdl", "Makemsix_jll", "Mustache", "OpenSSL_CLI_jll", "Pkg", "Printf", "PyCall", "Random", "SHA", "Scratch", "TOML", "Tar", "UUIDs", "Unicode", "Xorriso_jll", "libdmg_hfsplus_jll", "osslsigncode_jll", "p7zip_jll", "rcodesign_jll", "squashfs_tools_jll"]
+git-tree-sha1 = "30b6e20b0dc34a46568f71bf4d4223e7369667da"
+repo-rev = "hfs-dmg"
 repo-url = "https://github.com/PeaceFounder/AppBundler.jl.git"
 uuid = "40eb83ae-c93a-480c-8f39-f018b568f472"
 version = "1.0.1"
@@ -463,7 +463,7 @@ version = "1.9.1+0"
 [[deps.LibSSH2_jll]]
 deps = ["Artifacts", "CompilerSupportLibraries_jll", "Libdl", "OpenSSL_jll", "Zlib_jll"]
 uuid = "29816b5a-b9ab-546f-933c-edad1886dfa8"
-version = "1.11.103+0"
+version = "1.11.104+0"
 
 [[deps.Libdl]]
 uuid = "8f399da3-3557-5675-b5ff-fb832c97cbdb"
