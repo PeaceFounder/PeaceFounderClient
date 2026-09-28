@@ -9,7 +9,7 @@ bundle_identifier = "org.peacefounder.client"
 publisher = "CN=JanisErdmanis"
 publisher_name = "Janis Erdmanis"
 
-windowed = false
+windowed = true
 bundler = "juliac"
 juliaimg_incremental = false
 juliaimg_sysimg = ["PeaceFounderClient"]
